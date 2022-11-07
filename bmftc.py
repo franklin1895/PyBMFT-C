@@ -152,9 +152,8 @@ class Bmftc:
         self._min_25 = marsh_spinup["min_25"]
         self._orgAL_25 = marsh_spinup["orgAL_25"]
         self._orgAT_25 = marsh_spinup["orgAT_25"]
-
         # Load Forest Organic Profile files: Look-up table with soil organic matter for forest based on age and depth
-        directory_fop = "Input/PyBMFT-C/Forest_Organic_Profile"
+        directory_fop = "/Users/ceclmac/PycharmProjects/PyBMFT-C/Input/PyBMFT-C/Forest_Organic_Profile"
         file_forestOM = scipy.io.loadmat(directory_fop + "/forestOM.mat")  # [g] Table with forest organic matter profile stored in 25 depth increments of 2.5cm (rows) for forests of different ages (columns) from 1 to 80 years
         self._forestOM = file_forestOM["forestOM"]
         file_forestMIN = scipy.io.loadmat(directory_fop + "/forestMIN.mat")  # [g] Table with forest mineral matter profile stored in 25 depth increments of 2.5cm (rows) for forests of different ages (columns) from 1 to 80 years
@@ -212,7 +211,7 @@ class Bmftc:
         # Initialize seagrass
         self._seagrass_on = seagrass_on  # Boolean controls whether seagrass is turned on or off
         self._seagrass = np.zeros([self._endyear, self._B])  # Stores shoot density of seagrass in each cell for each year
-        self._seagrass_density_table = np.load("Input/PyBMFT-C/seagrass_density_table.npy")
+        self._seagrass_density_table = np.load("/Users/ceclmac/PycharmProjects/PyBMFT-C/Input/PyBMFT-C/seagrass_density_table.npy")
 
         # Set options for ODE solver
         POOLstopp5.terminal = True

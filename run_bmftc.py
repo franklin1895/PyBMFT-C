@@ -17,7 +17,7 @@ warnings.filterwarnings("ignore")
 # Create an instance of the BMI class
 bmftc = Bmftc(
             name="PyBMFT-C",
-            time_step_count=125,
+            time_step_count=100,
             relative_sea_level_rise=8,
             reference_concentration=50,
             slope_upland=0.005,
