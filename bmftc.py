@@ -97,7 +97,7 @@ class Bmftc:
         self._RSLR = relative_sea_level_rise * 10 ** (-3) / (3600 * 24 * 365)  # Convert from mm/yr to m/s
         self._time_index = 0
         self._dt = time_step
-        self._dur = time_step_count + 1
+        self._dur = time_step_count - 1
         self._Coi = reference_concentration  # [mg/L]
         self._Co = reference_concentration / 1000  # Convert to kg/m3
         self._slope = slope_upland
