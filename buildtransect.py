@@ -50,6 +50,7 @@ def buildtransect(R, C, slope, mwo, elev_25, amp, wind, bfo, endyear, startyear,
                          "scenario. Adjust the upland width accordingly.")
 
     B = bfo + mwo + upland_width  # [m] Total domain width, and also number of cells in domain each with 1 m width
+
     x = np.linspace(0, B - 1, num=B)  # x-position of each cell in model domain
     elevation = np.zeros([endyear, B])
     elevation[:spindur, :x_m] = amp - dfo  # Bay depth for first 25 (?) years is at equilibrium
