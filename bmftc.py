@@ -405,7 +405,7 @@ class Bmftc:
             self._endyear = yr
             return  # Exit program
 
-        tempelevation = self._elevation[yr - 1, self._x_m: self._x_f + 1]
+        tempelevation = self._elevation[yr - 1, self._x_m: self._x_f + 1] # Marsh elevation
         Dcells = int(self._Marsh_edge[yr - 1] - self._x_m)  # Gives the change in the number of marsh cells
 
         if Dcells > 0:  # Prograde the marsh, with new marsh cells having the same elevation as the previous marsh edge
