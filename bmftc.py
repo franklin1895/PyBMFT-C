@@ -3,7 +3,7 @@ PyBMFT-C: Bay-Marsh-Forest Transect Carbon Model (Python version)
 
 Last updated _25 April 2022_ by _IRB Reeves_
 ----------------------------------------------------------------------"""
-
+import copy
 import numpy as np
 import scipy.io
 from scipy.integrate import solve_ivp
@@ -27,6 +27,7 @@ class Bmftc:
             time_step=1,
             time_step_count=100,
             relative_sea_level_rise=4,
+            RSLR_List = [4]*5,
             reference_concentration=10,
             slope_upland=0.005,
 
@@ -95,6 +96,9 @@ class Bmftc:
         self._name = name
         self._RSLRi = relative_sea_level_rise  # [mm/yr]
         self._RSLR = relative_sea_level_rise * 10 ** (-3) / (3600 * 24 * 365)  # Convert from mm/yr to m/s
+        self._RSLRi_List = RSLR_List
+        self._RSLR_List = RSLR_List * 10 ** (-3) / (3600 * 24 * 365)
+
         self._time_index = 0
         self._dt = time_step
         self._dur = time_step_count - 1
@@ -141,6 +145,7 @@ class Bmftc:
 
         # Calculate additional variables
         self._SLR = self._RSLR * (3600 * 24 * 365)  # Convert to m/yr
+        self._SLR_List = self._RSLR_List * (3600 * 24 * 365)
         self._rhou = 1 / ((1 - 0.05) / self._rhos + 0.05 / self._rhoo)  # Bulk density of underlying bay, 95% mineral, 5% organic
         self._rhob = self._rhou
         self._tr = self._amp * 2  # [m] Tidal range
@@ -168,6 +173,11 @@ class Bmftc:
         self._msl = np.zeros([self._endyear])
         self._msl[self._startyear:self._endyear] = np.linspace(1, self._dur, num=self._dur) * self._SLR  # [m] Mean sea level over time relative to start
 
+        self._total_RSLR = []
+        for years in range(1,len(self._SLR_List)+1):
+            Cumulative_RSLR = np.sum(self._SLR_List[:years])
+            self._total_RSLR.append(copy.deepcopy(Cumulative_RSLR))
+        self._msl[self._startyear:self._startyear+len(self._total_RSLR)] = self._total_RSLR
         # Time
         self._to = np.linspace(0, 3600 * 24 * 365 * 1, 2)
         self._timestep = 365 * (24 / 12.5)  # [tidal cycles per year] number to multiply accretion simulated over a tidal cycle by
@@ -580,6 +590,7 @@ class Bmftc:
             self._Fm_org -= FF_org
             # Change the drowned marsh cell to z bay cell
             self._elevation[yr, :self._x_m] = self._elevation[yr, 0]
+            c= 20
 
         self._fluxes[:, yr] = [
             Fe_min,
